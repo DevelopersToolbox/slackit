@@ -1,0 +1,8 @@
+---
+author: TGWolf
+enable-categories: false
+min-words: 1
+output-file: CHANGELOG.md
+remove-categories: false
+silent: false
+verify-urls: false

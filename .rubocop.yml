@@ -1,0 +1,83 @@
+AllCops:
+  TargetRubyVersion: 2.5
+
+Layout/CaseIndentation:
+    Enabled: false
+
+Layout/ClosingHeredocIndentation:
+    Enabled: false
+
+Layout/FirstHashElementIndentation:
+    Enabled: false
+
+Layout/HashAlignment:
+    Enabled: false
+
+Layout/HeredocIndentation:
+    Enabled: false
+
+Layout/IndentationWidth:
+    Width: 4
+
+Layout/LineLength:
+    Enabled: false
+
+Layout/SpaceInsideArrayLiteralBrackets:
+    Enabled: false
+
+Lint/RescueException:
+    Enabled: false
+
+Metrics/AbcSize:
+    Enabled: false
+
+Metrics/BlockLength:
+    Enabled: false
+
+Metrics/BlockNesting:
+    Enabled: false
+
+Metrics/ClassLength:
+    Enabled: false
+
+Metrics/CyclomaticComplexity:
+    Enabled: false
+
+Metrics/MethodLength: 
+    Enabled: false
+
+Metrics/PerceivedComplexity:
+    Enabled: false
+
+Naming/FileName:
+    Enabled: false
+
+Style/FrozenStringLiteralComment:
+    Enabled: false
+
+Style/HashSyntax:
+    Enabled: false
+
+Style/PercentLiteralDelimiters:
+    Enabled: false
+
+Style/RaiseArgs:
+    EnforcedStyle: compact
+
+Style/RedundantBegin:
+    Enabled: false
+
+Style/RedundantConditional:
+    Enabled: false
+
+Style/RedundantReturn:
+    Enabled: false
+
+Style/SpecialGlobalVars:
+    Enabled: false
+
+Style/WordArray:
+    EnforcedStyle: brackets
+
+Style/RedundantPercentQ:
+    Enabled: false

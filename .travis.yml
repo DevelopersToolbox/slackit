@@ -1,0 +1,64 @@
+matrix:
+  include:
+  - language: ruby
+    name: "Bundler (rvm 2.5)"
+    rvm: 2.5
+    before_install:
+      - gem install bundler
+  - language: ruby
+    name: "Bundler (rvm 2.6)"
+    rvm: 2.6
+    before_install:
+      - gem install bundler
+  - language: ruby
+    name: "Bundler (rvm 2.7)"
+    rvm: 2.7
+    before_install:
+      - gem install bundler
+  - language: ruby
+    name: "Rubocop (rvm 2.5)"
+    env: SKIP_INTERPRETER=true
+    rvm: 2.5
+    before_install:
+      - git clone https://github.com/TravisToolbox/rubocop-travis.git
+    install:
+      - ./rubocop-travis/install.sh
+    script:
+      - ./rubocop-travis/scan.sh
+  - language: ruby
+    name: "Rubocop (rvm 2.6)"
+    env: SKIP_INTERPRETER=true
+    rvm: 2.6
+    before_install:
+      - git clone https://github.com/TravisToolbox/rubocop-travis.git
+    install:
+      - ./rubocop-travis/install.sh
+    script:
+      - ./rubocop-travis/scan.sh
+  - language: ruby
+    name: "Rubocop (rvm 2.7)"
+    env: SKIP_INTERPRETER=true
+    rvm: 2.7
+    before_install:
+      - git clone https://github.com/TravisToolbox/rubocop-travis.git
+    install:
+      - ./rubocop-travis/install.sh
+    script:
+      - ./rubocop-travis/scan.sh
+  - language: ruby
+    name: "Link Checker (rvm 2.7)"
+    rvm: 2.7
+    env:
+    - WHITELIST="https://img.shields.io"
+    - EXCLUDE_FILES="CHANGELOG.md"
+    before_install:
+      - mkdir travis
+      - git clone https://github.com/TravisToolbox/awesomebot-travis.git travis/awesomebot
+    install:
+      - ./travis/awesomebot/install.sh
+    script:
+      - ./travis/awesomebot/scan.sh
+notifications:
+  email: false
+  slack:
+    secure: fteRmCizwdBUF2X57Kp5TOxWXx6iOM1eRNEuTNgJgOvT+YMc6QPE3XjppGtaS/OHG7q+UCYhZP6P3C7aJRJO+oxHZMw/725LKabhy6pCBwcAnkxMV/CAnhhhI1jHzR5Iqk5IvctM9VZSfHXmCnM5VrobICMt4y8/fYkY47e4PZpTzorVO2oLNkR0Da0KrrYqeL0prlu4e9UGC8nU0jy8Nwvaap6OZPJUsYninQzhOgg008mFGTKBK852GHTSW99PLeyJahM00T8xx3ENpK2UpNmynE/r6OffsAmT90TeTsINItVoWn/g6h9lUd5co0OAt5uQ2zYWSFJRsL0HlLlJTk4RwJZ2ESClPoXKwqhBqr+LtRfQCQOnMFJ+V9Nx8ojOaS84QZREPQUlDFvqdBeSomWpeIDmmNeT2+SkyCrrDz4NsIYHI/hwPujIHt0547tIYqNTrsdelkZuWPtjPN+ZPCa+UhKFtvTCyTdqh96VuAjwNj2oM0CjI1CT5G8AnmkyYoqoVB5AfZ+ttfLqOwxmb78skAFpyiQx6i/j1wta4P0H/I+Ycr5Kk1RFOR2KmU8AdzMBUKda2gSJFkU5XIdAyd52ZDCC46olEL9Nw8WnsArFQJIPqlX/aJiXJ/W+0RNmcXdKThIFo9GOnj9ewR15/CWWAI6ofqmWlEJ/9lfGnmg=

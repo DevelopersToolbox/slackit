@@ -1,0 +1,136 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'slackit'
+require 'cmessages'
+
+# -------------------------------------------------------------------------------- #
+# Send Mssage to Slack                                                             #
+# -------------------------------------------------------------------------------- #
+# This function will take the input arguments and then send the message.           #
+# -------------------------------------------------------------------------------- #
+
+def send_message_to_slack(options)
+    begin
+        s = Slackit.new(options)
+
+        unless options[:validation_test]
+            if options[:attachment]
+                s.send_attachment(options[:message])
+            elsif options[:block]
+                s.send_block(options[:message])
+            else
+                s.send_message(options[:message])
+            end
+        end
+    rescue Exception => e
+        e.to_s.error
+        exit(1)
+    end
+    exit(0)
+end
+
+# -------------------------------------------------------------------------------- #
+# Process Arguments                                                                #
+# -------------------------------------------------------------------------------- #
+# This function will process the input from the command line and work out what it  #
+# is that the user wants to see.                                                   #
+#                                                                                  #
+# This is the main processing function where all the processing logic is handled.  #
+# -------------------------------------------------------------------------------- #
+
+def process_arguments
+    options = { :username => 'slackit', :attachment => false, :block => false }
+    # Enforce the presence of
+    mandatory = %I[webhook_url message]
+
+    optparse = OptionParser.new do |opts|
+        opts.banner = "Usage: #{$PROGRAM_NAME}"
+
+        opts.on('-h', '--help', 'Display this screen') do
+            puts opts
+            exit(1)
+        end
+        opts.on('-c', '--channel string', 'The channel to send the message to') do |channel|
+            options[:channel] = channel
+        end
+
+        opts.on('-i', '--icon-emoji string', 'The emoji to use for the channel icon [default: :wolf:]') do |icon_emoji|
+            options[:icon_emoji] = icon_emoji
+        end
+
+        opts.on('-m', '--message string', 'The message to send') do |message|
+            options[:message] = message
+        end
+
+        opts.on('-w', '--webhook-url string', 'The slack incoming webhook url to use') do |webhook_url|
+            options[:webhook_url] = webhook_url
+        end
+
+        opts.on('-u', '--username string', 'The username to send as [default: slackit]') do |username|
+            options[:username] = username
+        end
+
+        opts.separator ''
+        opts.separator 'Webhook Validation:'
+
+        opts.on('-v', '--validation-test', 'Run a webbook validation test') do
+            options[:validation_test] = true
+            options[:message] = 'This is a webhook validation test message'
+            options[:channel] = 'general'
+        end
+
+        opts.on('-V', '--validated-webhook', 'Flag the webhook as validated (skips constant validation)') do
+            options[:validated_webhook] = true
+        end
+
+        opts.separator ''
+        opts.separator 'Message type options:'
+
+        opts.on('-a', '--attachment', 'Treat the message as an attachment') do
+            options[:attachment] = true
+        end
+
+        opts.on('-b', '--block', 'Treat the message as a block') do
+            options[:block] = true
+        end
+    end
+
+    begin
+        optparse.parse!
+        options[:message] = ARGF.read unless STDIN.tty? # override message parameter if data is piped in
+        missing = mandatory.select { |param| options[param].nil? }
+        raise OptionParser::MissingArgument.new(missing.join(', ')) unless missing.empty?
+    rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
+        puts e.to_s
+        puts optparse
+        exit
+    end
+
+    if options[:attachment] && options[:block]
+        puts 'Error: You cannot use -a and -b at the same time! - aborting'
+        exit
+    end
+
+    exit 0 if send_message_to_slack(options)
+
+    exit 1
+end
+
+# -------------------------------------------------------------------------------- #
+# Main()                                                                           #
+# -------------------------------------------------------------------------------- #
+# The main function where all of the heavy lifting and script config is done.      #
+# -------------------------------------------------------------------------------- #
+
+def main
+    process_arguments
+end
+
+main
+
+# -------------------------------------------------------------------------------- #
+# End of Script                                                                    #
+# -------------------------------------------------------------------------------- #
+# This is the end - nothing more to see here.                                      #
+# -------------------------------------------------------------------------------- #
